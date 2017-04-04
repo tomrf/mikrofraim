@@ -4,12 +4,17 @@ class View
 {
     private static $twigLoader = null;
     private static $twig = null;
+    private static $cachePath = '../storage/cache/twig';
 
     public static function init()
     {
+        $cache = false;
+        if (filter_var(getenv('TWIG_USE_CACHE'), FILTER_VALIDATE_BOOLEAN)) {
+            $cache = self::$cachePath;
+        }
         self::$twigLoader = new Twig_Loader_Filesystem('../templates/');
         self::$twig = new Twig_Environment(self::$twigLoader, array(
-            'cache' => filter_var(getenv('TWIG_USE_CACHE'), FILTER_VALIDATE_BOOLEAN),
+            'cache' => $cache,
             'debug' => filter_var(getenv('TWIG_DEBUG'), FILTER_VALIDATE_BOOLEAN)
         ));
         self::$twig->addExtension(new Twig_Extension_Debug());

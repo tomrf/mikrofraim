@@ -27,6 +27,14 @@
     require_once('../lib/View.php');
     require_once('../lib/Log.php');
     require_once('../lib/Session.php');
+    require_once('../lib/Cache.php');
+
+    /* ensure writable filecache file */
+    if (strtolower(getenv('CACHE_ENGINE')) === 'filecache') {
+        if (! Cache::isFileCachePathWritable()) {
+            die('<b>Error:</b> Filecache path not writable.<br>Ensure correct permissions on "storage/" directory to correct this.');
+        }
+    }
 
     /* set up monolog */
     if (filter_var(getenv('USE_MONOLOG'), FILTER_VALIDATE_BOOLEAN)) {
