@@ -4,7 +4,7 @@
 
     /* load environment variables from .env */
     if (! file_exists('../.env')) {
-        die('<b>Error:</b> Environment file ".env" missing.<br>Rename ".env.example" to ".env" in the project root, and edit the file as necessary.');
+        die('<b>Error:</b> Environment file ".env" missing<br>Rename ".env.example" to ".env" in the project root, and edit the file as necessary.');
     }
     $dotenv = new Dotenv\Dotenv('../');
     $dotenv->load();
@@ -32,7 +32,7 @@
     if (strtolower(getenv('CACHE_ENGINE')) === 'filecache') {
         require_once('../lib/Cache.php');
         if (! Cache::isFileCachePathWritable()) {
-            die('<b>Error:</b> Filecache path not writable.<br>Ensure correct permissions on "storage/" directory to correct this.');
+            die('<b>Error:</b> Filecache path not writable<br>Ensure correct permissions on "storage/cache/" directory to correct this.');
         }
     }
 

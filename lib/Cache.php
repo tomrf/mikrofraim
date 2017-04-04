@@ -22,6 +22,9 @@ class Cache
     public static function isFileCachePathWritable()
     {
         if (! file_exists(self::$fileCachePath)) {
+            if (! touch(self::$fileCachePath)) {
+                return false;
+            }
             self::writeCache();
         }
         return is_writable(self::$fileCachePath);
