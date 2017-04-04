@@ -1,3 +1,4 @@
-cache/
+storage/cache/*
+storage/logs/*
 sftp-config.json
 .env
