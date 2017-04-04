@@ -1,6 +1,6 @@
 ## Mikrofraim
 
-Mikrofraim is a minimal PHP framework for websites, API's etc.
+Mikrofraim is a minimalist PHP framework for websites, API's etc.
 
 Fast internal array based routing with support for routing groups and authentication filters.
 
