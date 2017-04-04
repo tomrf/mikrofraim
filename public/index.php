@@ -26,6 +26,7 @@
     require_once('../lib/RouterResponse.php');
     require_once('../lib/View.php');
     require_once('../lib/Log.php');
+    require_once('../lib/Session.php');
 
     /* set up monolog */
     // $log = new \Monolog\Logger('name');
@@ -62,10 +63,10 @@
 
 
     /* configure and start session */
-    if (getenv('SESSION_NAME')) {
-        session_name(getenv('SESSION_NAME'));
-    }
-    session_start();
+    // if (getenv('SESSION_NAME')) {
+    //     session_name(getenv('SESSION_NAME'));
+    // }
+    // session_start();
 
     /* route the request */
     $response = $router->route($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
