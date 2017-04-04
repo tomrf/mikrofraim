@@ -54,10 +54,16 @@
         ORM::configure('password', getenv('DB_PASSWORD'));
     }
 
-    /* autoloader function for database models */
+    /* autoloader function for controllers and database models */
     function autoload($class)
     {
-        require_once '../models/' . $class . '.php';
+        if (file_exists('../controllers/' . $class . '.php')) {
+            require_once '../controllers/' . $class . '.php';
+        } else if (file_exists('../models/' . $class . '.php')) {
+            require_once '../models/' . $class . '.php';
+        } else {
+            throw new Exception('Class not found: ' . $class);
+        }
     }
     spl_autoload_register('autoload');
 
