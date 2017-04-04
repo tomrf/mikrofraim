@@ -6,10 +6,10 @@ Fast internal array based routing with support for routing groups and authentica
 
 We also use a few external components;
 
-- [Twig](https://github.com/twigphp/Twig).
-- [Whoops](https://github.com/filp/whoops).
-- [PHP dotenv](https://github.com/vlucas/phpdotenv).
-- [Idiorm and Paris](http://j4mie.github.io/idiormandparis/).
+- [Twig](https://github.com/twigphp/Twig) - Flexible, fast, and secure template engine for PHP
+- [Whoops](https://github.com/filp/whoops) - PHP errors for cool kids
+- [PHP dotenv](https://github.com/vlucas/phpdotenv) - Loads environment variables from .env
+- [Idiorm and Paris](http://j4mie.github.io/idiormandparis/) - A minimalist database toolkit for PHP5
 
 ## Installation
 
