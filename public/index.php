@@ -29,16 +29,8 @@
     require_once('../lib/Session.php');
 
     /* set up monolog */
-    // $log = new \Monolog\Logger('name');
-    // $log->pushHandler(new \Monolog\Handler\StreamHandler('../' . getenv('LOG_FILENAME'), \Monolog\Logger::DEBUG));
-    // $log->warning('Fooffff');
-    // $log->error('Barrrrr');
-    // $log->info('abklabkabk abk akbakbk a123 123 123');
     if (filter_var(getenv('USE_MONOLOG'), FILTER_VALIDATE_BOOLEAN)) {
         Log::init();
-        Log::debug('yay');
-        Log::notice('yay2');
-        Log::warning('yay3');
     }
 
     /* create Router instance, load routes from ../routes.php */
@@ -60,13 +52,6 @@
         require_once '../models/' . $class . '.php';
     }
     spl_autoload_register('autoload');
-
-
-    /* configure and start session */
-    // if (getenv('SESSION_NAME')) {
-    //     session_name(getenv('SESSION_NAME'));
-    // }
-    // session_start();
 
     /* route the request */
     $response = $router->route($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
