@@ -4,7 +4,7 @@ Mikrofraim is a minimal PHP framework for websites, API's etc.
 
 Fast internal array based routing with support for routing groups and authentication filters.
 
-We also use a few external components;
+We also include use a few 3rd party components;
 
 - [Twig](https://github.com/twigphp/Twig) - Flexible, fast, and secure template engine for PHP
 - [Whoops](https://github.com/filp/whoops) - PHP errors for cool kids
