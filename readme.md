@@ -14,8 +14,8 @@ We also include a few 3rd party components;
 
 ## Installation
 
-Clone or checkout the repository, do a "composer update" and copy .env.example to .env in the root folder.
+Clone the repository, do a "composer update", copy .env.example to .env in the root folder and ensure writable permissions on storage/.
 
 ## License
 
-Mikrofraim is licensed under a BEERWARE license scheme, but with a combination of vodka and energy drinks instead of beer.
+Mikrofraim is licensed under a BEERWARE license scheme, but with a combination of vodka and energy drinks replacing beer.
