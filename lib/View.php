@@ -9,9 +9,8 @@ class View
     {
         self::$twigLoader = new Twig_Loader_Filesystem('../templates/');
         self::$twig = new Twig_Environment(self::$twigLoader, array(
-            'cache' => false,
-            'auto_reload' => true,
-            'debug' => true
+            'cache' => filter_var(getenv('TWIG_USE_CACHE'), FILTER_VALIDATE_BOOLEAN),
+            'debug' => filter_var(getenv('TWIG_DEBUG'), FILTER_VALIDATE_BOOLEAN)
         ));
         self::$twig->addExtension(new Twig_Extension_Debug());
     }
@@ -23,6 +22,14 @@ class View
             $data = [ ];
         }
         return self::$twig->render($template, $data);
+    }
+
+    public static function redirect($path, $code = null)
+    {
+        if ($code) {
+            header('HTTP/1.1 ' . $code);
+        }
+        header('Location: ' . $path);
     }
 
 }

@@ -1,1 +1,3 @@
+cache/
 sftp-config.json
+.env

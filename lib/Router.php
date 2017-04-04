@@ -3,9 +3,22 @@
 class Router
 {
 	private $routes = null;
+	private $prefix = null;
+	private $filter = null;
+
+	public function group($prefix, $callable, $filter = null) {
+		$this->prefix = $prefix;
+		$this->filter = $filter;
+		$callable();
+		$this->prefix = null;
+		$this->filter = null;
+	}
 
 	public function routeAdd($method, $route, $handler)
 	{
+		if ($this->prefix) {
+			$route = $this->prefix . $route;
+		}
 		if (!isset($this->routes[$method])) {
 			$this->routes[$method] = [];
 		}
@@ -21,11 +34,17 @@ class Router
 			}
 			if (strstr(key($ptr), '?}')) {
 				$ptr['.handler'] = $handler;
+				if ($this->filter) {
+					$ptr['.filter'] = $this->filter;
+				}
 			}
 			$prev = &$ptr;
 			$ptr = &$ptr[$t];
 		}
 		$ptr['.handler'] = $handler;
+		if ($this->filter) {
+			$ptr['.filter'] = $this->filter;
+		}
 	}
 
 	public function route($method, $uri)
@@ -33,6 +52,7 @@ class Router
 		$path = $uri;
 		$query = null;
 		$params = [];
+		$filter = null;
 
 		if (strstr($uri, '?')) {
 			$tok = explode('?', $uri);
@@ -63,8 +83,11 @@ class Router
 				$ptr = $ptr[$t];
 			}
 		}
+		if (isset($ptr['.filter'])) {
+			$filter = $ptr['.filter'];
+		}
 		if (isset($ptr['.handler'])) {
-			return new RouterResponse($method, $ptr['.handler'], $params, $query);
+			return new RouterResponse($method, $ptr['.handler'], $params, $query, $filter);
 		}
 		return null;
 	}
