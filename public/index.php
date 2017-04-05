@@ -47,11 +47,30 @@
 
     /* configure ORM if env('USE_DATABASE') */
     if (filter_var(getenv('USE_DATABASE'), FILTER_VALIDATE_BOOLEAN)) {
-        ORM::configure('error_mode', PDO::ERRMODE_EXCEPTION);
-        ORM::configure('id_column', 'id');
-        ORM::configure("mysql:host=" . getenv('DB_HOSTNAME') . ";dbname=" . getenv('DB_DATABASE'));
-        ORM::configure('username', getenv('DB_USERNAME'));
-        ORM::configure('password', getenv('DB_PASSWORD'));
+        /* sqlite */
+        if (strtolower(getenv('DB_DRIVER')) == 'sqlite') {
+            ORM::configure('sqlite:../' . getenv('DB_FILENAME'));
+        }
+        /* mysql */
+        else if (strtolower(getenv('DB_DRIVER')) == 'mysql') {
+            ORM::configure('error_mode', PDO::ERRMODE_EXCEPTION);
+            ORM::configure('id_column', 'id');
+            ORM::configure("mysql:host=" . getenv('DB_HOSTNAME') . ";dbname=" . getenv('DB_DATABASE'));
+            ORM::configure('username', getenv('DB_USERNAME'));
+            ORM::configure('password', getenv('DB_PASSWORD'));
+        }
+        /* pgsql */
+        else if (strtolower(getenv('DB_DRIVER')) == 'pgsql') {
+            ORM::configure('error_mode', PDO::ERRMODE_EXCEPTION);
+            ORM::configure('id_column', 'id');
+            ORM::configure("pgsql:host=" . getenv('DB_HOSTNAME') . ";dbname=" . getenv('DB_DATABASE'));
+            ORM::configure('username', getenv('DB_USERNAME'));
+            ORM::configure('password', getenv('DB_PASSWORD'));
+        }
+        /* unknown driver */
+        else {
+            die('<b>Error:</b> Unknown database driver: ' . getenv('DB_DRIVER'));
+        }
     }
 
     /* autoloader function for controllers and database models */
@@ -96,7 +115,7 @@
             $callFunc = $call[1];
 
             if (! method_exists($callClass, $callFunc)) {
-                echo "ERROR: Method does not exist: {$response->call}";
+                echo "<b>Error:</b> Method does not exist: {$response->call}";
                 return;
             }
 
