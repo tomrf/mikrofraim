@@ -1,9 +1,16 @@
 <?php
 
-class Cache
+class FileCache
 {
     private static $cache = null;
-    private static $fileCachePath = '../storage/cache/filecache';
+    private static $fileCachePath = PROJECT_DIRECTORY . '/storage/cache/filecache';
+
+    public static function init()
+    {
+        register_shutdown_function(function() {
+            self::writeCache();
+        });
+    }
 
     private static function writeCache()
     {
@@ -35,14 +42,11 @@ class Cache
         if (! self::$cache) {
             self::readCache();
         }
-        self::$cache[$key]['value'] = $value;
+        self::$cache[$key]['v'] = $value;
         if ($ttl) {
-            self::$cache[$key]['expiration'] = (time() + $ttl);
+            self::$cache[$key]['e'] = (time() + $ttl);
         }
-        if (! self::writeCache()) {
-            return false;
-        }
-        return true;
+        return self::$cache[$key]['v'];
     }
 
     public static function get($key)
@@ -51,13 +55,13 @@ class Cache
             self::readCache();
         }
         if (isset(self::$cache[$key])) {
-            if (isset(self::$cache[$key]['expiration'])) {
-                if (self::$cache[$key]['expiration'] < time()) {
+            if (isset(self::$cache[$key]['e'])) {
+                if (self::$cache[$key]['e'] < time()) {
                     self::forget($key);
                     return null;
                 }
             }
-            return self::$cache[$key]['value'];
+            return self::$cache[$key]['v'];
         }
         return null;
     }
@@ -71,9 +75,6 @@ class Cache
         if (isset(self::$cache[$key])) {
             unset(self::$cache[$key]);
             $ret = true;
-        }
-        if (! self::writeCache()) {
-            $ret = false;
         }
         return $ret;
     }

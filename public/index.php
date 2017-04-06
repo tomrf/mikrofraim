@@ -1,4 +1,8 @@
 <?php
+    /* define some helpful constants used by the framework */
+    define('WORKING_DIRECTORY', getcwd());
+    define('PROJECT_DIRECTORY', realpath(WORKING_DIRECTORY . '/../'));
+
     /* autoload vendor packages */
     require_once('../vendor/autoload.php');
 
@@ -30,10 +34,12 @@
 
     /* load filecache and ensure writable filecache file */
     if (strtolower(getenv('CACHE_ENGINE')) === 'filecache') {
-        require_once('../lib/Cache.php');
+        require_once('../lib/FileCache.php');
+        class_alias('FileCache', 'Cache');
         if (! Cache::isFileCachePathWritable()) {
             die('<b>Error:</b> Filecache path not writable<br>Ensure correct permissions on "storage/cache/" directory to correct this.');
         }
+        Cache::init();
     }
 
     /* set up monolog */
