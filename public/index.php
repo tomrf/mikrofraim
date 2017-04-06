@@ -28,7 +28,6 @@
     /* require local framework components */
     require_once('../lib/Router.php');
     require_once('../lib/RouterResponse.php');
-    require_once('../lib/View.php');
     require_once('../lib/Log.php');
     require_once('../lib/Session.php');
 
@@ -45,6 +44,11 @@
     /* set up monolog */
     if (filter_var(getenv('USE_MONOLOG'), FILTER_VALIDATE_BOOLEAN)) {
         Log::init();
+    }
+
+    /* load twig and View class */
+    if (filter_var(getenv('USE_TWIG'), FILTER_VALIDATE_BOOLEAN)) {
+        require_once('../lib/View.php');
     }
 
     /* create Router instance, load routes from ../routes.php */
