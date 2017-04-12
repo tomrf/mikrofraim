@@ -33,12 +33,18 @@
 
     /* load filecache and ensure writable filecache file */
     if (strtolower(getenv('CACHE_ENGINE')) === 'filecache') {
+        require_once('../lib/CacheFacade.php');
         require_once('../lib/FileCache.php');
-        class_alias('FileCache', 'Cache');
-        if (! Cache::isFileCachePathWritable()) {
+
+        $fileCache = new Mikrofraim\Cache\Filecache();
+        if (! $fileCache->isFileCachePathWritable()) {
             die('<b>Error:</b> Filecache path not writable<br>Ensure correct permissions on "storage/cache/" directory to correct this.');
         }
-        Cache::init();
+
+        $fileCache->init();
+
+        class_alias('Mikrofraim\Cache\CacheFacade', 'Cache');
+        Cache::init($fileCache);
     }
 
     /* set up monolog */
