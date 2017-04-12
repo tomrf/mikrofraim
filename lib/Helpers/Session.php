@@ -30,7 +30,7 @@ class Session
         return null;
     }
 
-    public static function forget($key)
+    public static function delete($key)
     {
         self::start();
         if (isset($_SESSION[$key])) {
