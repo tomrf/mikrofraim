@@ -36,7 +36,7 @@
         require_once('../lib/CacheFacade.php');
         require_once('../lib/FileCache.php');
 
-        $fileCache = new Mikrofraim\Cache\Filecache();
+        $fileCache = new Mikrofraim\Cache\FileCache();
         if (! $fileCache->isFileCachePathWritable()) {
             die('<b>Error:</b> Filecache path not writable<br>Ensure correct permissions on "storage/cache/" directory to correct this.');
         }
