@@ -15,7 +15,7 @@
 
     /* set production mode */
     if (filter_var(getenv('PRODUCTION'), FILTER_VALIDATE_BOOLEAN)) {
-        ini_set('display_errors','Off');
+        ini_set('display_errors', 'Off');
     } else {
         /* register whoops handler if enabled */
         if (filter_var(getenv('USE_WHOOPS'), FILTER_VALIDATE_BOOLEAN)) {
@@ -32,9 +32,21 @@
     require_once('../lib/Router/RouterResponse.php');
     require_once('../lib/Helpers/Session.php');
 
-    /* load filecache and ensure writable filecache file */
-    if (strtolower(getenv('CACHE_ENGINE')) === 'filecache') {
+    /* load array cache */
+    if (strtolower(getenv('CACHE_ENGINE')) === 'array') {
         require_once('../lib/Facades/Cache.php');
+        require_once('../lib/Cache/ArrayCache.php');
+
+        $arrayCache = new Mikrofraim\Cache\ArrayCache();
+        class_alias('Mikrofraim\Facades\Cache', 'Cache');
+
+        Cache::setInstance($arrayCache);
+    }
+
+    /* load filecache and ensure writable filecache file */
+    if (strtolower(getenv('CACHE_ENGINE')) === 'file') {
+        require_once('../lib/Facades/Cache.php');
+        require_once('../lib/Cache/ArrayCache.php');
         require_once('../lib/Cache/FileCache.php');
 
         $fileCache = new Mikrofraim\Cache\FileCache();

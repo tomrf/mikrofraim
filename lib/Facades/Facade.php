@@ -4,24 +4,35 @@ namespace Mikrofraim\Facades;
 
 abstract class Facade
 {
-    private static $instance = null;
+    protected static $instance = [];
 
     public static function setInstance($instance)
     {
-        self::$instance = $instance;
+        static::$instance[static::getFacadeName()] = $instance;
+    }
+
+    public static function getInstance()
+    {
+        if (! isset(static::$instance[static::getFacadeName()])) {
+            throw new \RuntimeException('Instance does not exist');
+        }
+
+        return static::$instance[static::getFacadeName()];
     }
 
     public static function __callStatic($name, $arguments)
     {
-        if (self::$instance === null) {
+        $instance = static::getInstance();
+
+        if ($instance === null) {
             throw new \RuntimeException('No instance set');
         }
 
-        if (! method_exists(self::$instance, $name)) {
+        if (! method_exists($instance, $name)) {
             throw new \RuntimeException('Method does not exist');
         }
 
-        return call_user_func_array([self::$instance, $name], $arguments);
+        return call_user_func_array([ $instance, $name ], $arguments);
     }
 
 }
