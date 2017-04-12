@@ -131,7 +131,7 @@ class FileCache implements \Psr\SimpleCache\CacheInterface
             if (isset($this->cache[$key]['e'])) {
                 if ($this->cache[$key]['e'] < time()) {
                     $this->delete($key);
-                    return null;
+                    return $default;
                 }
             }
             return unserialize($this->cache[$key]['v']);
