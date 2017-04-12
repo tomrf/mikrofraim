@@ -8,7 +8,9 @@ class FileCache
     public static function init()
     {
         register_shutdown_function(function() {
-            self::writeCache();
+            if (self::$cache) {
+                self::writeCache();
+            }
         });
     }
 
