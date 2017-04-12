@@ -28,15 +28,14 @@
     /* require local framework components */
     require_once('../lib/Facades/Facade.php');
     require_once('../lib/Facades/Route.php');
-    require_once('../lib/Router.php');
-    require_once('../lib/RouterResponse.php');
-    require_once('../lib/Log.php');
-    require_once('../lib/Session.php');
+    require_once('../lib/Router/Router.php');
+    require_once('../lib/Router/RouterResponse.php');
+    require_once('../lib/Helpers/Session.php');
 
     /* load filecache and ensure writable filecache file */
     if (strtolower(getenv('CACHE_ENGINE')) === 'filecache') {
         require_once('../lib/Facades/Cache.php');
-        require_once('../lib/FileCache.php');
+        require_once('../lib/Cache/FileCache.php');
 
         $fileCache = new Mikrofraim\Cache\FileCache();
         if (! $fileCache->isFileCachePathWritable()) {
@@ -51,12 +50,13 @@
 
     /* set up monolog */
     if (filter_var(getenv('USE_MONOLOG'), FILTER_VALIDATE_BOOLEAN)) {
+        require_once('../lib/Helpers/Log.php');
         Log::init();
     }
 
     /* load twig and View class */
     if (filter_var(getenv('USE_TWIG'), FILTER_VALIDATE_BOOLEAN)) {
-        require_once('../lib/View.php');
+        require_once('../lib/Helpers/View.php');
     }
 
     /* create Router instance, set up facade and load routes from ../routes.php */
