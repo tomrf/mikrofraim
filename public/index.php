@@ -26,7 +26,8 @@
     }
 
     /* require local framework components */
-    require_once('../lib/facades/BaseFacade.php');
+    require_once('../lib/Facades/Facade.php');
+    require_once('../lib/Facades/Route.php');
     require_once('../lib/Router.php');
     require_once('../lib/RouterResponse.php');
     require_once('../lib/Log.php');
@@ -34,7 +35,7 @@
 
     /* load filecache and ensure writable filecache file */
     if (strtolower(getenv('CACHE_ENGINE')) === 'filecache') {
-        require_once('../lib/facades/CacheFacade.php');
+        require_once('../lib/Facades/Cache.php');
         require_once('../lib/FileCache.php');
 
         $fileCache = new Mikrofraim\Cache\FileCache();
@@ -42,7 +43,7 @@
             die('<b>Error:</b> Filecache path not writable<br>Ensure correct permissions on "storage/cache/" directory to correct this.');
         }
 
-        class_alias('Mikrofraim\Facade\CacheFacade', 'Cache');
+        class_alias('Mikrofraim\Facades\Cache', 'Cache');
 
         Cache::setInstance($fileCache);
         Cache::init();
@@ -58,8 +59,10 @@
         require_once('../lib/View.php');
     }
 
-    /* create Router instance, load routes from ../routes.php */
+    /* create Router instance, set up facade and load routes from ../routes.php */
     $router = new Router();
+    class_alias('Mikrofraim\Facades\Route', 'Route');
+    Route::setInstance($router);
     require_once('../routes.php');
 
     /* configure ORM if env('USE_DATABASE') */

@@ -14,7 +14,7 @@ class Router
         $this->filter = null;
     }
 
-    public function routeAdd($method, $route, $handler)
+    public function add($method, $route, $handler)
     {
         if ($this->prefix) {
             $route = $this->prefix . $route;
@@ -92,8 +92,4 @@ class Router
         return null;
     }
 
-    public function debugPrintRoutes()
-    {
-        var_dump($this->routes);
-    }
 }

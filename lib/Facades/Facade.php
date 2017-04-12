@@ -1,8 +1,8 @@
 <?php
 
-namespace Mikrofraim\Facade;
+namespace Mikrofraim\Facades;
 
-class BaseFacade
+abstract class Facade
 {
     private static $instance = null;
 
