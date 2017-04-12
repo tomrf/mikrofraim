@@ -26,6 +26,7 @@
     }
 
     /* require local framework components */
+    require_once('../lib/facades/BaseFacade.php');
     require_once('../lib/Router.php');
     require_once('../lib/RouterResponse.php');
     require_once('../lib/Log.php');
@@ -33,7 +34,7 @@
 
     /* load filecache and ensure writable filecache file */
     if (strtolower(getenv('CACHE_ENGINE')) === 'filecache') {
-        require_once('../lib/CacheFacade.php');
+        require_once('../lib/facades/CacheFacade.php');
         require_once('../lib/FileCache.php');
 
         $fileCache = new Mikrofraim\Cache\FileCache();
@@ -41,10 +42,10 @@
             die('<b>Error:</b> Filecache path not writable<br>Ensure correct permissions on "storage/cache/" directory to correct this.');
         }
 
-        $fileCache->init();
+        class_alias('Mikrofraim\Facade\CacheFacade', 'Cache');
 
-        class_alias('Mikrofraim\Cache\CacheFacade', 'Cache');
-        Cache::init($fileCache);
+        Cache::setInstance($fileCache);
+        Cache::init();
     }
 
     /* set up monolog */
