@@ -65,24 +65,35 @@ class Router
         }
 
         $ptr = $this->routes[$method];
-
         $tok = explode('/', $path);
-        foreach ($tok as $t) {
-            if ($t === '') {
+
+        foreach ($tok as $i => $dir) {
+            if ($dir === '') {
                 continue;
             }
-            $key = key($ptr);
-            if ($key[0] === '{') {
-                $ptr = $ptr[$key];
-                $key = substr($key, 1, -1);
-                $params[$key] = $t;
+            if (isset($ptr[$dir])) {
+                $ptr = $ptr[$dir];
+            } else if (isset($ptr['*'])) {
+                $ptr = $ptr['*'];
+                break;
             } else {
-                if (! isset($ptr[$t])) {
+                $match = 0;
+                foreach ($ptr as $j => $p) {
+                    if ($j[0] === '.') {
+                        continue;
+                    }
+                    if ($j[0] === '{') {
+                        $ptr = $ptr[$j];
+                        $params[substr($j, 1, -1)] = $dir;
+                        $match++;
+                    }
+                }
+                if (! $match) {
                     return null;
                 }
-                $ptr = $ptr[$t];
             }
         }
+
         if (isset($ptr['.filter'])) {
             $filter = $ptr['.filter'];
         }
