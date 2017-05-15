@@ -25,6 +25,11 @@
         }
     }
 
+    /* set timezone */
+    if (getenv('TIMEZONE')) {
+        date_default_timezone_set(getenv('TIMEZONE'));
+    }
+
     /* require local framework components */
     require_once('../lib/Facades/Facade.php');
     require_once('../lib/Facades/Route.php');
