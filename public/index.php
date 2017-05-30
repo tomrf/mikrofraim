@@ -25,9 +25,11 @@
         }
     }
 
-    /* set timezone */
+    /* set timezone, default to UTC */
     if (getenv('TIMEZONE')) {
         date_default_timezone_set(getenv('TIMEZONE'));
+    } else {
+        date_default_timezone_set('UTC');
     }
 
     /* require local framework components */
@@ -113,10 +115,12 @@
     /* autoloader function for controllers and database models */
     function autoload($class)
     {
-        if (file_exists('../controllers/' . $class . '.php')) {
-            require_once '../controllers/' . $class . '.php';
-        } else if (file_exists('../models/' . $class . '.php')) {
+        if (file_exists('../models/' . $class . '.php')) {
             require_once '../models/' . $class . '.php';
+        } else if (file_exists('../controllers/' . $class . '.php')) {
+            require_once '../controllers/' . $class . '.php';
+        } else if (file_exists('../classes/' . $class . '.php')) {
+            require_once '../classes/' . $class . '.php';
         } else {
             throw new Exception('Class not found: ' . $class);
         }
@@ -136,9 +140,9 @@
         $params = array_merge($params, ['_query' => $response->query]);
     }
 
-    /* pass through filter if set */
-    if ($response->filter) {
-        if (! call_user_func($response->filter)) {
+    /* pass through before filter if set */
+    if ($response->before) {
+        if (! call_user_func($response->before)) {
             header("HTTP/1.0 403 Forbidden");
             return;
         }
@@ -165,4 +169,9 @@
     }
 
     /* call handler */
-    echo call_user_func_array($call, $params);
+    if (isset($response->after)) {
+        $handlerReturn = call_user_func_array($call, $params);
+        echo call_user_func_array($response->after, [ $handlerReturn ]);
+    } else {
+        echo call_user_func_array($call, $params);
+    }

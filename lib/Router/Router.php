@@ -4,14 +4,17 @@ class Router
 {
     private $routes = null;
     private $prefix = null;
-    private $filter = null;
+    private $before = null;
+    private $after = null;
 
-    public function group($prefix, $callable, $filter = null) {
+    public function group($prefix, $callable, $before = null, $after = null) {
         $this->prefix = $prefix;
-        $this->filter = $filter;
+        $this->before = $before;
+        $this->after = $after;
         $callable();
         $this->prefix = null;
-        $this->filter = null;
+        $this->before = null;
+        $this->after = null;
     }
 
     public function add($method, $route, $handler)
@@ -34,16 +37,22 @@ class Router
             }
             if (strstr(key($ptr), '?}')) {
                 $ptr['.handler'] = $handler;
-                if ($this->filter) {
-                    $ptr['.filter'] = $this->filter;
+                if ($this->before) {
+                    $ptr['.before'] = $this->before;
+                }
+                if ($this->after) {
+                    $ptr['.after'] = $this->after;
                 }
             }
             $prev = &$ptr;
             $ptr = &$ptr[$t];
         }
         $ptr['.handler'] = $handler;
-        if ($this->filter) {
-            $ptr['.filter'] = $this->filter;
+        if ($this->before) {
+            $ptr['.before'] = $this->before;
+        }
+        if ($this->after) {
+            $ptr['.after'] = $this->after;
         }
     }
 
@@ -52,7 +61,8 @@ class Router
         $path = $uri;
         $query = null;
         $params = [];
-        $filter = null;
+        $before = null;
+        $after = null;
 
         if (strstr($uri, '?')) {
             $tok = explode('?', $uri);
@@ -94,11 +104,15 @@ class Router
             }
         }
 
-        if (isset($ptr['.filter'])) {
-            $filter = $ptr['.filter'];
+        if (isset($ptr['.before'])) {
+            $before = $ptr['.before'];
+        }
+
+        if (isset($ptr['.after'])) {
+            $after = $ptr['.after'];
         }
         if (isset($ptr['.handler'])) {
-            return new RouterResponse($method, $ptr['.handler'], $params, $query, $filter);
+            return new RouterResponse($method, $ptr['.handler'], $params, $query, $before, $after);
         }
         return null;
     }
