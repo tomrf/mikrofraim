@@ -21,6 +21,7 @@ Clone the repository, do a "composer update", copy .env.example to .env in the r
 lib/            Internal framework library classes, for facades, caching, routing and helpers
 models/         Paris ORM models (totally optional), autoloaded
 controller/     Classic MVC controller functions, autoloaded
+classes/		Custom classes for your app, not created by default, but will be autoloaded from if it exists
 public/         The public web root, contains index.php responsible for bootstrapping the framework
 templates/      Twig template files, for easy rendering via the View::render() framework helper
 storage/        Temporary storage area for logs and filebased caching (if enabled)
