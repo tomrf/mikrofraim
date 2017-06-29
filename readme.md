@@ -106,6 +106,7 @@ Cache::clear();
 
 ## Twig templates
 Templates resides, per default, in ```templates/```
+
 Please refer to the official Twig documentation to learn about the twig syntax and features.
 ## License
 
