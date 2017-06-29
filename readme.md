@@ -1,6 +1,6 @@
 ## Mikrofraim
 
-Mikrofraim is a minimalist PHP framework for websites, API's etc.
+Mikrofraim is a minimalist PHP framework for websites, APIs etc.
 
 Fast internal array based routing with support for routing groups and authentication filters.
 
@@ -29,7 +29,17 @@ routes.php      Route definitions
 composer.json   Composer project dependencies
 ```
 
-## Routing example
+## Routing
+
+All routes live in `routes.php` by default, where you can add simple routes and more complex routing groups.
+
+Add routes with `Route::add()` which accept three arguments; **request verb** (GET, POST, ...), **path** and **handler function**
+
+**Request verb**
+
+Any valid HTTP request verb, or `*` to match all request types.
+
+## Routing examples
 ### Simple routing
 ##### Optional argument (val), closure handler, direct output
 ***/routes.php***
@@ -43,7 +53,7 @@ Route::add('GET', '/test/{val?}', function($val = 'default') {
 ```
 Route::add('GET', '/user/{id}/list', 'UserController@list');
 ```
-***controllers/UserController.php***
+***/controllers/UserController.php***
 ```
 Class UserController {
     public function list() {
@@ -58,12 +68,24 @@ Class UserController {
 Route::group('/prefix', function() {
     Route::add('GET', '/resource', 'ResourceController@resource');
 }, function() {
-    /* this filter is called before routing */
-    /* return false to deny the request */
-    /* return true to accept it */
+    // this filter is called before routing
+    // return false to deny the request
+    // return true to accept it
+
+    if (Session::get('authenticated') !== true) {
+        return false;
+    }
+
+    return true;
 }, function($response) {
-    /* this filter is called after routing and handling the request, but before data is returned to client */
-    /* $repsonse contains any returned data from handling function and can be manipulated freely before being returned to client */
+    // this filter is called after routing and handling the request, but before data is returned to client
+    // $repsonse contains any returned data from handling function and can be manipulated freely before being returned to client
+
+    if (! $response) {
+        return View::render('error.html', [ 'errorMessage' => 'internal error, no data ' ]);
+    }
+
+    return $response;
 });
 ```
 
@@ -106,7 +128,7 @@ Cache::clear();
 ```
 
 ## Twig templates
-Templates resides, per default, in ```templates/```
+Templates resides, per default, in `templates/`
 
 Please refer to the official Twig documentation to learn about the twig syntax and features.
 ## License
