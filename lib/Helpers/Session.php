@@ -1,5 +1,7 @@
 <?php
 
+namespace Mikrofraim;
+
 class Session
 {
     private static $started = false;

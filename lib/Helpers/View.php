@@ -1,5 +1,7 @@
 <?php
 
+namespace Mikrofraim;
+
 class View
 {
     private static $twigLoader = null;
@@ -12,12 +14,12 @@ class View
         if (filter_var(getenv('TWIG_USE_CACHE'), FILTER_VALIDATE_BOOLEAN)) {
             $cache = self::$cachePath;
         }
-        self::$twigLoader = new Twig_Loader_Filesystem('../templates/');
-        self::$twig = new Twig_Environment(self::$twigLoader, array(
+        self::$twigLoader = new \Twig_Loader_Filesystem('../templates/');
+        self::$twig = new \Twig_Environment(self::$twigLoader, array(
             'cache' => $cache,
             'debug' => filter_var(getenv('TWIG_DEBUG'), FILTER_VALIDATE_BOOLEAN)
         ));
-        self::$twig->addExtension(new Twig_Extension_Debug());
+        self::$twig->addExtension(new \Twig_Extension_Debug());
     }
 
     public static function render($template, $data = null)

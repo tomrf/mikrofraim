@@ -1,5 +1,7 @@
 <?php
 
+namespace Mikrofraim;
+
 class Log
 {
     private static $logger = null;

@@ -1,5 +1,7 @@
 <?php
 
+namespace Mikrofraim;
+
 class Router
 {
     private $routes = null;

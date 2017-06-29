@@ -1,5 +1,7 @@
 <?php
 
+namespace Mikrofraim;
+
 class RouterResponse
 {
     public $method = null;

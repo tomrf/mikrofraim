@@ -1,4 +1,10 @@
 <?php
+
+    use Mikrofraim\Router;
+    use Mikrofraim\Log;
+    use Mikrofraim\Session;
+    use Mikrofraim\View;
+
     /* define some helpful constants used by the framework */
     define('WORKING_DIRECTORY', getcwd());
     define('PROJECT_DIRECTORY', realpath(WORKING_DIRECTORY . '/../'));
@@ -39,6 +45,9 @@
     require_once('../lib/Router/RouterResponse.php');
     require_once('../lib/Helpers/Session.php');
 
+    /* session alias */
+    class_alias('Mikrofraim\Session', 'Session');
+
     /* load array cache */
     if (strtolower(getenv('CACHE_ENGINE')) === 'array') {
         require_once('../lib/Facades/Cache.php');
@@ -70,12 +79,14 @@
     /* set up monolog */
     if (filter_var(getenv('USE_MONOLOG'), FILTER_VALIDATE_BOOLEAN)) {
         require_once('../lib/Helpers/Log.php');
+        class_alias('Mikrofraim\Log', 'Log');
         Log::init();
     }
 
     /* load twig and View class */
     if (filter_var(getenv('USE_TWIG'), FILTER_VALIDATE_BOOLEAN)) {
         require_once('../lib/Helpers/View.php');
+        class_alias('Mikrofraim\View', 'View');
     }
 
     /* create Router instance, set up facade and load routes from ../routes.php */
@@ -117,6 +128,9 @@
     {
         if (file_exists('../models/' . $class . '.php')) {
             require_once '../models/' . $class . '.php';
+        } else if (substr($class, 0, 6) === 'Model\\') {
+            $resolvedClass = basename(str_replace('\\', '/', $class));
+            require_once '../models/' . $resolvedClass . '.php';
         } else if (file_exists('../controllers/' . $class . '.php')) {
             require_once '../controllers/' . $class . '.php';
         } else if (file_exists('../classes/' . $class . '.php')) {
@@ -137,7 +151,7 @@
     /* parse response */
     $params = $response->params;
     if ($response->query) {
-        $params = array_merge($params, ['_query' => $response->query]);
+        $params = array_merge($params, [ '_query' => $response->query ]);
     }
 
     /* pass through before filter if set */
