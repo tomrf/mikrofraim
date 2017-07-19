@@ -5,18 +5,82 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %} Untitled {% endblock %}</title>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <style type="text/css">
+            html {
+                height: 100%;
+                width: 100%;
+            }
+            body {
+                background-color: #fff;
+                color: #000;
+                height: inherit;
+                width: inherit;
+            }
+            .loader-wrapper {
+                background-color: #fff;
+                height: 100%;
+                left: 0;
+                max-height: 100%;
+                max-width: 100%;
+                overflow: hidden;
+                position: absolute;
+                top: 0;
+                width: 100%;
+                z-index: 99999;
+            }
+            .loader,
+            .loader:after {
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+            }
+            .loader {
+                margin: 60px auto;
+                font-size: 10px;
+                position: relative;
+                text-indent: -9999em;
+                border: 2px solid #e1e1e1;
+                border-left: 2px solid #a81010;
+                -webkit-transform: translateZ(0);
+                -ms-transform: translateZ(0);
+                transform: translateZ(0);
+                -webkit-animation: load8 1.1s infinite linear;
+                animation: load8 1.1s infinite linear;
+            }
+            @-webkit-keyframes load8 {
+                0% {
+                    -webkit-transform: rotate(0deg);
+                    transform: rotate(0deg);
+                }
+                100% {
+                    -webkit-transform: rotate(360deg);
+                    transform: rotate(360deg);
+                }
+            }
+            @keyframes load8 {
+                0% {
+                    -webkit-transform: rotate(0deg);
+                    transform: rotate(0deg);
+                }
+                100% {
+                    -webkit-transform: rotate(360deg);
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="loader-wrapper"><div class="loader">Loading...</div></div>
+        <link rel="stylesheet" href="/css/bootstrap.css"><!--<link rel="stylesheet" href="/css/bootstrap.min.css">-->
         <link rel="stylesheet" href="/css/default.css">
         <style>
             {% block style %} {% endblock %}
         </style>
-    </head>
-    <body>
         <div id="content">
             {% block content %} {% endblock %}
         </div>
-        <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="/js/jquery.js"></script><!--<script src="/js/jquery.min.js"></script>-->
+        <script src="/js/bootstrap.js"></script><!--<script src="/js/bootstrap.min.js"></script>-->
         <script src="/js/default.js"></script>
         <script>
             {% block script %} {% endblock %}
