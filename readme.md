@@ -130,7 +130,9 @@ Cache::clear();
 ## Twig templates
 Templates resides, per default, in `templates/`
 
+You can create custom 40x views for 404 and 403 responses by adding a `404.html` and `403.html` template in the templates directory. 
+
 Please refer to the official Twig documentation to learn about the twig syntax and features.
 ## License
 
-Mikrofraim is licensed under a BEERWARE license scheme, but with a combination of vodka and energy drinks replacing beer.
+Mikrofraim is licensed under a BEERWARE license scheme
