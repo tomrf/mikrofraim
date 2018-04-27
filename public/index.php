@@ -145,6 +145,11 @@
     $response = $router->route($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
     if (! $response) {
         header("HTTP/1.0 404 Not Found");
+
+        if (file_exists('../templates/404.html')) {
+            echo View::render('404.html');
+        }
+
         return;
     }
 
@@ -158,6 +163,11 @@
     if ($response->before) {
         if (! call_user_func($response->before)) {
             header("HTTP/1.0 403 Forbidden");
+
+            if (file_exists('../templates/403.html')) {
+                echo view::render('403.html');
+            }
+
             return;
         }
     }
