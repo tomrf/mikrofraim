@@ -19,6 +19,8 @@ class View
             'cache' => $cache,
             'debug' => filter_var(getenv('TWIG_DEBUG'), FILTER_VALIDATE_BOOLEAN)
         ));
+        self::$twig->addGlobal('session', isset($_SESSION) ? $_SESSION : null);
+        self::$twig->addGlobal('server', isset($_SERVER) ? $_SERVER : null);
         self::$twig->addExtension(new \Twig_Extension_Debug());
     }
 
