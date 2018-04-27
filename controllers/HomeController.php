@@ -1,9 +1,9 @@
 <?php
 
-    Class HomeController
+Class HomeController
+{
+    public function index()
     {
-        public function index()
-        {
-            return View::render('home.html');
-        }
+        return View::render('home.html');
     }
+}
