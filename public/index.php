@@ -67,7 +67,7 @@
 
         $fileCache = new Mikrofraim\Cache\FileCache();
         if (! $fileCache->isFileCachePathWritable()) {
-            die('<b>Error:</b> Filecache path not writable<br>Ensure correct permissions on "storage/cache/" directory to correct this.');
+            throw new Exception('FileCache path not writable: storage/cache/');
         }
 
         class_alias('Mikrofraim\Facades\Cache', 'Cache');
@@ -81,6 +81,12 @@
         require_once('../lib/Helpers/Log.php');
         class_alias('Mikrofraim\Log', 'Log');
         Log::init();
+    }
+
+    /* set up syslog */
+    if (filter_var(getenv('USE_SYSLOG'), FILTER_VALIDATE_BOOLEAN)) {
+        require_once('../lib/Helpers/Syslog.php');
+        class_alias('Mikrofraim\Syslog', 'Syslog');
     }
 
     /* load twig and View class */
@@ -98,11 +104,11 @@
     /* configure ORM if env('USE_DATABASE') */
     if (filter_var(getenv('USE_DATABASE'), FILTER_VALIDATE_BOOLEAN)) {
         /* sqlite */
-        if (strtolower(getenv('DB_DRIVER')) == 'sqlite') {
+        if (strtolower(getenv('DB_DRIVER')) === 'sqlite') {
             ORM::configure('sqlite:../' . getenv('DB_FILENAME'));
         }
         /* mysql */
-        else if (strtolower(getenv('DB_DRIVER')) == 'mysql') {
+        else if (strtolower(getenv('DB_DRIVER')) === 'mysql') {
             ORM::configure('error_mode', PDO::ERRMODE_EXCEPTION);
             ORM::configure('id_column', 'id');
             ORM::configure("mysql:host=" . getenv('DB_HOSTNAME') . ";dbname=" . getenv('DB_DATABASE'));
@@ -110,7 +116,7 @@
             ORM::configure('password', getenv('DB_PASSWORD'));
         }
         /* pgsql */
-        else if (strtolower(getenv('DB_DRIVER')) == 'pgsql') {
+        else if (strtolower(getenv('DB_DRIVER')) === 'pgsql') {
             ORM::configure('error_mode', PDO::ERRMODE_EXCEPTION);
             ORM::configure('id_column', 'id');
             ORM::configure("pgsql:host=" . getenv('DB_HOSTNAME') . ";dbname=" . getenv('DB_DATABASE'));
@@ -119,7 +125,7 @@
         }
         /* unknown driver */
         else {
-            die('<b>Error:</b> Unknown database driver: ' . getenv('DB_DRIVER'));
+            throw new Exception('Unknown database driver: ' . getenv('DB_DRIVER'));
         }
     }
 
@@ -180,8 +186,7 @@
             $callFunc = $call[1];
 
             if (! method_exists($callClass, $callFunc)) {
-                echo "<b>Error:</b> Method does not exist: {$response->call}";
-                return;
+                throw new Exception('Method does not exist: ' . $response->call);
             }
 
             $call = [ $callClass, $callFunc ];

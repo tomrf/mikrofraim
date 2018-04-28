@@ -35,7 +35,9 @@ class FileCache extends ArrayCache implements \Psr\SimpleCache\CacheInterface
     public function isFileCachePathWritable()
     {
         if (! file_exists($this->fileCachePath)) {
-            if (! touch($this->fileCachePath)) {
+            try {
+                touch($this->fileCachePath);
+            } catch (Exception $e) {
                 return false;
             }
             $this->writeCache();
