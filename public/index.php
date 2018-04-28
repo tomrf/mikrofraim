@@ -76,6 +76,20 @@
         Cache::init();
     }
 
+    /* load redis cache */
+    if (strtolower(getenv('CACHE_ENGINE')) === 'redis') {
+        require_once('../lib/Facades/Cache.php');
+        require_once('../lib/Cache/ArrayCache.php');
+        require_once('../lib/Cache/RedisCache.php');
+
+        $redisCache = new Mikrofraim\Cache\RedisCache();
+
+        class_alias('Mikrofraim\Facades\Cache', 'Cache');
+
+        Cache::setInstance($redisCache);
+        Cache::init();
+    }
+
     /* set up monolog */
     if (filter_var(getenv('USE_MONOLOG'), FILTER_VALIDATE_BOOLEAN)) {
         require_once('../lib/Helpers/Log.php');
