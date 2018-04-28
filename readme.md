@@ -12,6 +12,10 @@ We also include a few 3rd party components;
 - [PHP dotenv](https://github.com/vlucas/phpdotenv) - Loads environment variables from .env
 - [Idiorm and Paris](http://j4mie.github.io/idiormandparis/) - A minimalist database toolkit for PHP5
 
+## Requirements
+
+PHP 7.x
+
 ## Installation
 
 Clone the repository, do a "composer update", copy .env.example to .env in the root folder and ensure writable permissions on storage/.
