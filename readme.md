@@ -110,7 +110,7 @@ Our helper class has easy to use interfaces for debug(), info(), notice(), warni
 Access the full power of Monolog directly by accessing the \Monolog namespace.
 
 ## Caching example
-Mikrofraim ships with two basic cache implementations, ArrayCache (non-persistent in-memory storrage lasting the lifetime of the request) and the FileCache, which works as an ArrayCache but writes and loads content from disk during requests, for long term data persistance.
+Mikrofraim ships with a redis cache interface, as well as two basic cache implementations, ArrayCache (non-persistent in-memory storage lasting the lifetime of the request) and the FileCache, which works as an ArrayCache but writes and loads content from disk during requests, for long term data persistance.
 
 Our cache interface follows the PSR-16 simple-cache standard.
 
