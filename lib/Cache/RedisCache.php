@@ -14,12 +14,12 @@ class RedisCache extends ArrayCache implements \Psr\SimpleCache\CacheInterface
         $redisPort = getenv('CACHE_REDIS_PORT') ? getenv('CACHE_REDIS_PORT') : 6379;
 
         if (! $this->redisConnection->connect($redisHost, $redisPort)) {
-            throw new Exception('Redis connection failed');
+            throw new \Exception('Redis connection failed');
         }
 
         if (getenv('CACHE_REDIS_PASSWORD')) {
             if (! $this->redisConnection->auth(getenv('CACHE_REDIS_PASSWORD'))) {
-                throw new Exception('Redis authentication failed');
+                throw new \Exception('Redis authentication failed');
             }
         }
     }
