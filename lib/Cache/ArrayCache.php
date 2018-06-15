@@ -116,7 +116,7 @@ class ArrayCache implements \Psr\SimpleCache\CacheInterface
 
     public function setMultiple($values, $ttl = null)
     {
-        if (! is_array($values) && ! $values instanceof Traversable && ! is_a($values, 'Generator')) {
+        if (! is_array($values) && ! $values instanceof \Traversable && ! is_a($values, 'Generator')) {
             throw new InvalidArgumentException;
         }
 
@@ -129,7 +129,7 @@ class ArrayCache implements \Psr\SimpleCache\CacheInterface
 
     public function getMultiple($keys, $default = null)
     {
-        if (! is_array($keys) && ! $keys instanceof Traversable && ! is_a($keys, 'Generator')) {
+        if (! is_array($keys) && ! $keys instanceof \Traversable && ! is_a($keys, 'Generator')) {
             throw new InvalidArgumentException;
         }
 
@@ -145,7 +145,7 @@ class ArrayCache implements \Psr\SimpleCache\CacheInterface
 
     public function deleteMultiple($keys)
     {
-        if (! is_array($keys) && ! $keys instanceof Traversable && ! is_a($keys, 'Generator')) {
+        if (! is_array($keys) && ! $keys instanceof \Traversable && ! is_a($keys, 'Generator')) {
             throw new InvalidArgumentException;
         }
 

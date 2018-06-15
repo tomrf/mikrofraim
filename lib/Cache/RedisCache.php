@@ -39,6 +39,8 @@ class RedisCache extends ArrayCache implements \Psr\SimpleCache\CacheInterface
                 if (get_class($ttl) !== 'DateInterval') {
                     throw new InvalidArgumentException;
                 } else {
+                    $date = new \DateTime();
+                    $date->add($ttl);
                     $ttl = $date->getTimestamp() - time();
                 }
             } else {
@@ -46,7 +48,11 @@ class RedisCache extends ArrayCache implements \Psr\SimpleCache\CacheInterface
             }
         }
 
-        $this->redisConnection->set($key, serialize($value), $ttl);
+        if (is_integer($ttl)) {
+            $this->redisConnection->set($key, serialize($value), $ttl);
+        } else {
+            $this->redisConnection->set($key, serialize($value));
+        }
 
         return true;
 
@@ -77,6 +83,7 @@ class RedisCache extends ArrayCache implements \Psr\SimpleCache\CacheInterface
     public function clear()
     {
         $this->redisConnection->flushAll();
+        return true;
     }
 
 }

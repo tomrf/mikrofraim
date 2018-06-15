@@ -21,7 +21,7 @@ class Syslog
             if (isset($stringToLevel[$level])) {
                 $level = $stringToLevel[$level];
             } else {
-                throw new Exception('Unknown syslog level: ' . $level);
+                throw new \Exception('Unknown syslog level: ' . $level);
             }
         }
 
