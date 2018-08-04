@@ -13,7 +13,7 @@ abstract class Facade
 
     public static function getInstance()
     {
-        if (! isset(static::$instance[static::getFacadeName()])) {
+        if (!isset(static::$instance[static::getFacadeName()])) {
             throw new \RuntimeException('Instance does not exist');
         }
 
@@ -28,11 +28,11 @@ abstract class Facade
             throw new \RuntimeException('No instance set');
         }
 
-        if (! method_exists($instance, $name)) {
+        if (!method_exists($instance, $name)) {
             throw new \RuntimeException('Method does not exist');
         }
 
-        return call_user_func_array([ $instance, $name ], $arguments);
+        return call_user_func_array([$instance, $name], $arguments);
     }
 
 }

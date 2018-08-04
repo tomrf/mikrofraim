@@ -17,27 +17,37 @@ class Log
 
     public static function debug($message)
     {
-        if (self::$logger) self::$logger->debug($message);
+        if (self::$logger) {
+            self::$logger->debug($message);
+        }
     }
 
     public static function info($message)
     {
-        if (self::$logger) self::$logger->info($message);
+        if (self::$logger) {
+            self::$logger->info($message);
+        }
     }
 
     public static function notice($message)
     {
-        if (self::$logger) self::$logger->notice($message);
+        if (self::$logger) {
+            self::$logger->notice($message);
+        }
     }
 
     public static function warning($message)
     {
-        if (self::$logger) self::$logger->warning($message);
+        if (self::$logger) {
+            self::$logger->warning($message);
+        }
     }
 
     public static function error($message)
     {
-        if (self::$logger) self::$logger->error($message);
+        if (self::$logger) {
+            self::$logger->error($message);
+        }
     }
 
 }

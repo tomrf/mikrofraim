@@ -10,7 +10,7 @@ class FileCache extends ArrayCache implements \Psr\SimpleCache\CacheInterface
 
     public function init()
     {
-        register_shutdown_function(function() {
+        register_shutdown_function(function () {
             if ($this->cacheRead) {
                 $this->writeCache();
             }
@@ -25,7 +25,7 @@ class FileCache extends ArrayCache implements \Psr\SimpleCache\CacheInterface
     private function readCache()
     {
         $this->cacheRead = true;
-        $this->cache = (array) json_decode(file_get_contents($this->fileCachePath), true);
+        $this->cache = (array)json_decode(file_get_contents($this->fileCachePath), true);
         if ($this->cache === null) {
             return false;
         }
@@ -34,7 +34,7 @@ class FileCache extends ArrayCache implements \Psr\SimpleCache\CacheInterface
 
     public function isFileCachePathWritable()
     {
-        if (! file_exists($this->fileCachePath)) {
+        if (!file_exists($this->fileCachePath)) {
             try {
                 touch($this->fileCachePath);
             } catch (\Exception $e) {

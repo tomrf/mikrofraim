@@ -7,6 +7,7 @@
 
 namespace Model;
 
-class Example extends \Model {
+class Example extends \Model
+{
 
 }

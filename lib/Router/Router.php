@@ -9,7 +9,8 @@ class Router
     private $before = null;
     private $after = null;
 
-    public function group($prefix, $callable, $before = null, $after = null) {
+    public function group($prefix, $callable, $before = null, $after = null)
+    {
         $this->prefix = $prefix;
         $this->before = $before;
         $this->after = $after;
@@ -72,7 +73,7 @@ class Router
             $query = $tok[1];
         }
 
-        if (! isset($this->routes[$method])) {
+        if (!isset($this->routes[$method])) {
             return null;
         }
 
@@ -85,7 +86,7 @@ class Router
             }
             if (isset($ptr[$dir])) {
                 $ptr = $ptr[$dir];
-            } else if (isset($ptr['*'])) {
+            } elseif (isset($ptr['*'])) {
                 $ptr = $ptr['*'];
                 break;
             } else {
@@ -100,7 +101,7 @@ class Router
                         $match++;
                     }
                 }
-                if (! $match) {
+                if (!$match) {
                     return null;
                 }
             }

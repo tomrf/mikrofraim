@@ -14,13 +14,13 @@ class ArrayCache implements \Psr\SimpleCache\CacheInterface
     {
         $validCharacters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-';
 
-        if (! is_string($key)) {
+        if (!is_string($key)) {
             return false;
         }
 
         $keyLength = strlen($key);
 
-        if (! $keyLength) {
+        if (!$keyLength) {
             return false;
         }
 
@@ -39,11 +39,11 @@ class ArrayCache implements \Psr\SimpleCache\CacheInterface
             $key = strval($key);
         }
 
-        if (! $this->isKeyValid($key)) {
+        if (!$this->isKeyValid($key)) {
             throw new InvalidArgumentException;
         }
 
-        if ($ttl !== null && ! is_integer($ttl)) {
+        if ($ttl !== null && !is_integer($ttl)) {
             if (is_object($ttl)) {
                 if (get_class($ttl) !== 'DateInterval') {
                     throw new InvalidArgumentException;
@@ -58,8 +58,7 @@ class ArrayCache implements \Psr\SimpleCache\CacheInterface
         if ($ttl !== null) {
             if (is_integer($ttl)) {
                 $ttl = $ttl;
-            }
-            else if (get_class($ttl) === 'DateInterval') {
+            } elseif (get_class($ttl) === 'DateInterval') {
                 $date = new \DateTime();
                 $date->add($ttl);
                 $ttl = $date->getTimestamp() - time();
@@ -77,7 +76,7 @@ class ArrayCache implements \Psr\SimpleCache\CacheInterface
 
     public function get($key, $default = null)
     {
-        if (! $this->isKeyValid($key)) {
+        if (!$this->isKeyValid($key)) {
             throw new InvalidArgumentException;
         }
 
@@ -96,7 +95,7 @@ class ArrayCache implements \Psr\SimpleCache\CacheInterface
 
     public function delete($key)
     {
-        if (! $this->isKeyValid($key)) {
+        if (!$this->isKeyValid($key)) {
             throw new InvalidArgumentException;
         }
 
@@ -116,7 +115,7 @@ class ArrayCache implements \Psr\SimpleCache\CacheInterface
 
     public function setMultiple($values, $ttl = null)
     {
-        if (! is_array($values) && ! $values instanceof \Traversable && ! is_a($values, 'Generator')) {
+        if (!is_array($values) && !$values instanceof \Traversable && !is_a($values, 'Generator')) {
             throw new InvalidArgumentException;
         }
 
@@ -129,7 +128,7 @@ class ArrayCache implements \Psr\SimpleCache\CacheInterface
 
     public function getMultiple($keys, $default = null)
     {
-        if (! is_array($keys) && ! $keys instanceof \Traversable && ! is_a($keys, 'Generator')) {
+        if (!is_array($keys) && !$keys instanceof \Traversable && !is_a($keys, 'Generator')) {
             throw new InvalidArgumentException;
         }
 
@@ -145,7 +144,7 @@ class ArrayCache implements \Psr\SimpleCache\CacheInterface
 
     public function deleteMultiple($keys)
     {
-        if (! is_array($keys) && ! $keys instanceof \Traversable && ! is_a($keys, 'Generator')) {
+        if (!is_array($keys) && !$keys instanceof \Traversable && !is_a($keys, 'Generator')) {
             throw new InvalidArgumentException;
         }
 

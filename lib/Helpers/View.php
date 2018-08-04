@@ -28,7 +28,7 @@ class View
     {
         self::init();
         if ($data == null) {
-            $data = [ ];
+            $data = [];
         }
         return self::$twig->render($template, $data);
     }

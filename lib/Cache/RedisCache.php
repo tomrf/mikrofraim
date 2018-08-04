@@ -13,12 +13,12 @@ class RedisCache extends ArrayCache implements \Psr\SimpleCache\CacheInterface
         $redisHost = getenv('CACHE_REDIS_HOSTNAME') ? getenv('CACHE_REDIS_HOSTNAME') : '127.0.0.1';
         $redisPort = getenv('CACHE_REDIS_PORT') ? getenv('CACHE_REDIS_PORT') : 6379;
 
-        if (! $this->redisConnection->connect($redisHost, $redisPort)) {
+        if (!$this->redisConnection->connect($redisHost, $redisPort)) {
             throw new \Exception('Redis connection failed');
         }
 
         if (getenv('CACHE_REDIS_PASSWORD')) {
-            if (! $this->redisConnection->auth(getenv('CACHE_REDIS_PASSWORD'))) {
+            if (!$this->redisConnection->auth(getenv('CACHE_REDIS_PASSWORD'))) {
                 throw new \Exception('Redis authentication failed');
             }
         }
@@ -30,11 +30,11 @@ class RedisCache extends ArrayCache implements \Psr\SimpleCache\CacheInterface
             $key = strval($key);
         }
 
-        if (! $this->isKeyValid($key)) {
+        if (!$this->isKeyValid($key)) {
             throw new InvalidArgumentException;
         }
 
-        if ($ttl !== null && ! is_integer($ttl)) {
+        if ($ttl !== null && !is_integer($ttl)) {
             if (is_object($ttl)) {
                 if (get_class($ttl) !== 'DateInterval') {
                     throw new InvalidArgumentException;
@@ -60,7 +60,7 @@ class RedisCache extends ArrayCache implements \Psr\SimpleCache\CacheInterface
 
     public function get($key, $default = null)
     {
-        if (! $this->isKeyValid($key)) {
+        if (!$this->isKeyValid($key)) {
             throw new InvalidArgumentException;
         }
         $value = $this->redisConnection->get($key);
@@ -73,7 +73,7 @@ class RedisCache extends ArrayCache implements \Psr\SimpleCache\CacheInterface
 
     public function delete($key)
     {
-        if (! $this->isKeyValid($key)) {
+        if (!$this->isKeyValid($key)) {
             throw new InvalidArgumentException;
         }
         $this->redisConnection->delete($key);

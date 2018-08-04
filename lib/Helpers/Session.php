@@ -8,7 +8,7 @@ class Session
 
     private static function start()
     {
-        if (! self::$started) {
+        if (!self::$started) {
             if (getenv('SESSION_NAME')) {
                 session_name(getenv('SESSION_NAME'));
             }
