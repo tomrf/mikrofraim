@@ -2,3 +2,7 @@ storage/cache/*
 storage/logs/*
 sftp-config.json
 .env
+composer.lock
+.idea/
+.phan/
+vendor/
