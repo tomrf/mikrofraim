@@ -1,5 +1,7 @@
 ## Mikrofraim
 
+<img src="https://raw.githubusercontent.com/tomrf/mikrofraim/master/public/img/mikrofraim-logo.png" width="100px">
+
 Mikrofraim is a minimalist PHP framework for websites, APIs etc.
 
 Fast internal array based routing with support for routing groups and authentication filters.
@@ -144,5 +146,4 @@ Mikrofraim is licensed under a BEERWARE license scheme
 
 ## Sponsored by
 
-[monometric.io](https://monometric.io) and [Upnode 
-AS](https://upnode.no)
+[monometric.io](https://monometric.io) and [Upnode AS](https://upnode.no)
