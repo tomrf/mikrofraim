@@ -48,6 +48,14 @@ require_once('../lib/Helpers/Session.php');
 /* session alias */
 class_alias('Mikrofraim\Session', 'Session');
 
+/* create csrf token if enabled */
+if (filter_var(getenv('GENERATE_CSRF'), FILTER_VALIDATE_BOOLEAN)) {
+    require_once('../lib/Helpers/Form.php');
+    class_alias('Mikrofraim\Form', 'Form');
+    Session::set('csrfTokenPrevious', Session::get('csrfToken'));
+    Session::set('csrfToken', bin2hex(random_bytes(32)));
+}
+
 /* load array cache */
 if (strtolower(getenv('CACHE_ENGINE')) === 'array') {
     require_once('../lib/Facades/Cache.php');
