@@ -1,5 +1,7 @@
 {
+    "name": "mikrofraim",
     "require": {
+        "php": ">=7.0",
         "twig/twig": "^2.4",
         "j4mie/idiorm": "^1.5",
         "j4mie/paris": "^1.5",
