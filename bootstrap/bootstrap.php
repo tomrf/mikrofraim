@@ -6,7 +6,7 @@ use Mikrofraim\Session;
 
 /* define some helpful constants used by the framework */
 define('WORKING_DIRECTORY', getcwd());
-define('PROJECT_DIRECTORY', realpath(WORKING_DIRECTORY));
+define('PROJECT_DIRECTORY', realpath(WORKING_DIRECTORY) . '/..');
 
 /* autoload vendor packages */
 require_once __DIR__.'/../vendor/autoload.php';
