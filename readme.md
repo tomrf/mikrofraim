@@ -143,7 +143,7 @@ Please refer to the official Twig documentation to learn about the twig syntax a
 
 ## License
 
-Mikrofraim is licensed under a BEERWARE license scheme
+Mikrofraim is licensed under the Modified BSD License (The 3-Clause BSD License)
 
 ## Sponsored by
 
