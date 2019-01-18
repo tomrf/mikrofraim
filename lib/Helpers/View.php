@@ -14,7 +14,11 @@ class View
         if (filter_var(getenv('TWIG_USE_CACHE'), FILTER_VALIDATE_BOOLEAN)) {
             $cache = self::$cachePath;
         }
-        self::$twigLoader = new \Twig_Loader_Filesystem('../templates/');
+        $templatesDirectory = '../templates';
+        if (defined('MIKROFRAIM_TESTSUITE')) {
+            $templatesDirectory = 'templates';
+        }
+        self::$twigLoader = new \Twig_Loader_Filesystem($templatesDirectory);
         self::$twig = new \Twig_Environment(self::$twigLoader, array(
             'cache' => $cache,
             'debug' => filter_var(getenv('TWIG_DEBUG'), FILTER_VALIDATE_BOOLEAN)

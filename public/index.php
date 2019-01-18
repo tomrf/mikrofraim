@@ -1,8 +1,5 @@
 <?php
 
-use Mikrofraim\Router;
-use Mikrofraim\Log;
-use Mikrofraim\Session;
 use Mikrofraim\View;
 
 /* load bootstrap.php */

@@ -3,7 +3,6 @@
 use Mikrofraim\Router;
 use Mikrofraim\Log;
 use Mikrofraim\Session;
-use Mikrofraim\View;
 
 /* define some helpful constants used by the framework */
 define('WORKING_DIRECTORY', getcwd());
@@ -13,10 +12,11 @@ define('PROJECT_DIRECTORY', realpath(WORKING_DIRECTORY));
 require_once __DIR__.'/../vendor/autoload.php';
 
 /* load environment variables from .env */
-if (!file_exists(__DIR__.'/../.env')) {
-    throw new Exception('Environment file ".env" missing, copy it from ".env.example"');
+$dotEnvPath = $_ENV['MIKROFRAIM_ENVIRONMENT_PATH'] ?? __DIR__.'/../.env';
+if (!file_exists($dotEnvPath)) {
+    throw new Exception('Environment file "' . $dotEnvPath . '" missing, copy it from ".env.example"');
 }
-$dotenv = new Dotenv\Dotenv(__DIR__.'/../');
+$dotenv = new Dotenv\Dotenv(dirname($dotEnvPath), basename($dotEnvPath));
 $dotenv->load();
 
 /* set production mode */
@@ -161,8 +161,6 @@ function autoload($class)
         require_once __DIR__.'/../controllers/' . $class . '.php';
     } elseif (file_exists(__DIR__.'/../classes/' . $class . '.php')) {
         require_once __DIR__.'/../classes/' . $class . '.php';
-    } else {
-        throw new Exception('Class not found: ' . $class);
     }
 }
 
