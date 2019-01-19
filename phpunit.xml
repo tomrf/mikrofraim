@@ -10,6 +10,7 @@
         <testsuite name="tests">
           <directory>tests</directory>
           <exclude>tests/MikrofraimFrameworkTest.php</exclude>
+          <exclude>tests/MikrofraimFrameworkCacheTest.php</exclude>
         </testsuite>
     </testsuites>
 
