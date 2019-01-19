@@ -89,7 +89,7 @@ class MikfrofraimTestBase extends TestCase
         $routerReponse = $this->getRouterResponse($method, $uri);
         $callable = $this->getCallableFromRouterResponse(
                         $this->getRouterResponse($method, $uri));
-        return call_user_func($callable, $routerReponse->params);
+        return call_user_func_array($callable, $routerReponse->params);
     }
 }
 

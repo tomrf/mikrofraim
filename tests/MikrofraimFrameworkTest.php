@@ -34,7 +34,7 @@ class MikrofraimFrameworkTest extends MikfrofraimTestBase
 
     public function testThatUnknownURIReturnsNull(): void
     {
-        $this->assertNull($this->getRouterResponse('GET', '/non_existing_route', [], [], []));
+        $this->assertNull($this->getRouterResponse('GET', '/non_existing_route'));
     }
 
     public function testThatMainUriReturnsValidRouterResponse()
