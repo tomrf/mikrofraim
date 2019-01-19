@@ -127,7 +127,11 @@ require_once __DIR__.'/../routes.php';
 if (filter_var(getenv('USE_DATABASE'), FILTER_VALIDATE_BOOLEAN)) {
     /* sqlite */
     if (strtolower(getenv('DB_DRIVER')) === 'sqlite') {
-        ORM::configure('sqlite:../' . getenv('DB_FILENAME'));
+        $sqlitePrefix = '../';
+        if (defined('MIKROFRAIM_TESTSUITE')) {
+            $sqlitePrefix = './';
+        }
+        ORM::configure('sqlite:' . $sqlitePrefix . getenv('DB_FILENAME'));
     } /* mysql */
     elseif (strtolower(getenv('DB_DRIVER')) === 'mysql') {
         ORM::configure('error_mode', PDO::ERRMODE_EXCEPTION);
