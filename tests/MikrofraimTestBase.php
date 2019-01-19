@@ -14,7 +14,7 @@ class MikfrofraimTestBase extends TestCase
     public function setUp()
     {
         require_once('bootstrap/bootstrap.php');
-        $this->router = Route::getInstance('router');
+        $this->router = Route::getInstance();
     }
 
     protected function checkIfRouterResponseIsValid($routerResponse): void

@@ -9,6 +9,19 @@
  */
 class MikrofraimFrameworkTest extends MikfrofraimTestBase
 {
+    public function setUp()
+    {
+        parent::setUp();
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        if (file_exists(getenv('DATABASE_FILENAME'))) {
+            @unlink(getenv('DATABASE_FILENAME'));
+        }
+    }
+
     /**
      * Test that default route contains a title and a link to readme.md
      */
@@ -33,5 +46,38 @@ class MikrofraimFrameworkTest extends MikfrofraimTestBase
     public function testSetup()
     {
         $this->assertInstanceOf(\Mikrofraim\Router::class, $this->router);
+    }
+
+    protected function createTables()
+    {
+        $db = ORM::get_db();
+        $db->exec('
+            DROP TABLE IF EXISTS berries;
+            CREATE TABLE berries (
+                name string,
+                c integer
+            );
+        ');
+        $blueBerry = ORM::for_table('berries')->create();
+        $blueBerry->name = 'blue';
+        $blueBerry->c = 10;
+        $blueBerry->save();
+
+        $redBerry = ORM::for_table('berries')->create();
+        $redBerry->name = 'red';
+        $redBerry->c = 20;
+        $redBerry->save();
+    }
+
+    public function testBerries()
+    {
+        $this->createTables();
+        $berries = ORM::for_table('berries')
+            ->order_by_asc('c')
+            ->find_many();
+        $this->assertEquals(2, count($berries));
+
+        $this->assertEquals('blue', $berries[0]->name);
+        $this->assertEquals('red', $berries[1]->name);
     }
 }
