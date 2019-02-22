@@ -136,15 +136,18 @@ if (filter_var(getenv('USE_DATABASE'), FILTER_VALIDATE_BOOLEAN)) {
     elseif (strtolower(getenv('DB_DRIVER')) === 'mysql') {
         ORM::configure('error_mode', PDO::ERRMODE_EXCEPTION);
         ORM::configure('id_column', 'id');
-        ORM::configure("mysql:host=" . getenv('DB_HOSTNAME') . ";dbname=" . getenv('DB_DATABASE'));
+        ORM::configure('mysql:host=' . getenv('DB_HOSTNAME')
+            . ';dbname=' . getenv('DB_DATABASE')
+            . ';charset=' . getenv('DB_ENCODING'));
         ORM::configure('username', getenv('DB_USERNAME'));
         ORM::configure('password', getenv('DB_PASSWORD'));
-        ORM::configure('driver_options', [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES ' . getenv('DB_ENCODING')]);
     } /* pgsql */
     elseif (strtolower(getenv('DB_DRIVER')) === 'pgsql') {
         ORM::configure('error_mode', PDO::ERRMODE_EXCEPTION);
         ORM::configure('id_column', 'id');
-        ORM::configure("pgsql:host=" . getenv('DB_HOSTNAME') . ";dbname=" . getenv('DB_DATABASE'));
+        ORM::configure('pgsql:host=' . getenv('DB_HOSTNAME')
+            . ';dbname=' . getenv('DB_DATABASE')
+            . ';charset=' . getenv('DB_ENCODING'));
         ORM::configure('username', getenv('DB_USERNAME'));
         ORM::configure('password', getenv('DB_PASSWORD'));
     } /* unknown driver */
