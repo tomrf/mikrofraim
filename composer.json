@@ -1,5 +1,6 @@
 {
     "name": "tomrf/mikrofraim",
+    "license": "BSD-3-Clause",
     "require": {
         "php": ">=7.2",
         "twig/twig": "^2.11",
