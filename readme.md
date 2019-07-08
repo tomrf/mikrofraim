@@ -11,8 +11,7 @@ We also include a few 3rd party components;
 - [Twig](https://github.com/twigphp/Twig) - Flexible, fast, and secure template engine for PHP
 - [Whoops](https://github.com/filp/whoops) - PHP errors for cool kids
 - [Monolog](https://github.com/Seldaek/monolog) - Powerful and flexible logging for PHP
-- [PHP dotenv](https://github.com/vlucas/phpdotenv) - Loads environment variables from .env
-- [Idiorm and Paris](http://j4mie.github.io/idiormandparis/) - A minimalist database toolkit for PHP5
+- [Idiorm and Paris](http://j4mie.github.io/idiormandparis/) - A minimalist database toolkit for PHP
 
 ## Requirements
 
@@ -25,13 +24,13 @@ Clone the repository, do a "composer update", copy .env.example to .env in the r
 ## Framework structure
 ```
 boostrap/       Contains bootstrap.php, responsible for bootstrapping the framework
-lib/            Internal framework library classes, for facades, caching, routing and helpers
-models/         Paris ORM models (totally optional), autoloaded
+lib/            Internal framework library classes, for routing, helpers and fascades
 controller/     Classic MVC controller functions, autoloaded
-classes/        Custom classes for your app, not created by default, but will be autoloaded from if it exists
+classes/        Custom classes for your app, autoloaded under Classes namespace
+models/         Paris ORM models (totally optional), autoloaded under Models namespace
 public/         The public web root, contains index.php responsible for initiating bootstrapping and routing the request
 templates/      Twig template files, for easy rendering via the View::render() framework helper
-storage/        Temporary storage area for logs and filebased caching (if enabled)
+storage/        Temporary storage area for logs and file based caching (if enabled)
 routes.php      Route definitions
 composer.json   Composer project dependencies
 ```
@@ -110,12 +109,10 @@ This would result in the following messages written to /storage/logs/debug.log
 ```
 Our helper class has easy to use interfaces for debug(), info(), notice(), warning() and error() levels of logging.
 
-Access the full power of Monolog directly by accessing the \Monolog namespace.
+Access the full power of Monolog directly by accessing the log component.
 
 ## Caching example
-Mikrofraim ships with a redis cache interface, as well as two basic cache implementations, ArrayCache (non-persistent in-memory storage lasting the lifetime of the request) and the FileCache, which works as an ArrayCache but writes and loads content from disk during requests, for long term data persistance.
-
-Our cache interface follows the PSR-16 simple-cache standard.
+Mikrofraim utilizes the php-cache project's PSR-16 / SimpleCache bridge and includes the array, filebased and redis adapters by default.
 
 Configure which cache engine to use in the environment file (.env)
 
@@ -137,7 +134,7 @@ Cache::clear();
 ## Twig templates
 Templates resides, per default, in `templates/`
 
-You can create custom 40x views for 404 and 403 responses by adding a `404.html` and `403.html` template in the templates directory. 
+You can create custom 40x views for 404 and 403 responses by adding a `404.html` and `403.html` template in the templates directory.
 
 Please refer to the official Twig documentation to learn about the twig syntax and features.
 
@@ -147,4 +144,4 @@ Mikrofraim is licensed under the Modified BSD License (The 3-Clause BSD License)
 
 ## Sponsored by
 
-[monometric.io](https://monometric.io) and [Upnode AS](https://upnode.no)
+[Upnode AS](https://upnode.no)

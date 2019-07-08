@@ -1,15 +1,40 @@
 <?php
 
-namespace Mikrofraim;
+namespace Mikrofraim\Router;
 
 class Router
 {
+    /**
+     * Route definitions
+     * @var null|array
+     */
     private $routes = null;
+
+    /**
+     * Route prefix
+     * @var null|string
+     */
     private $prefix = null;
+
+    /**
+     * Before route filter
+     * @var null|callable
+     */
     private $before = null;
+
+    /**
+     * After route filter
+     * @var null|callable
+     */
     private $after = null;
 
-    public function group($prefix, $callable, $before = null, $after = null)
+    /**
+     * @param  string $prefix
+     * @param  callable $callable
+     * @param  mixed $before
+     * @param  mixed $after
+     */
+    public function group(string $prefix, callable $callable, $before = null, $after = null): void
     {
         $this->prefix = $prefix;
         $this->before = $before;
@@ -20,46 +45,56 @@ class Router
         $this->after = null;
     }
 
-    public function add($method, $route, $handler)
+    /**
+     * Add a route
+     * @param string $method
+     * @param string $route
+     * @param mixed $handler
+     */
+    public function add(string $method, string $route, $handler): void
     {
-        if ($this->prefix) {
+        if ($this->prefix !== null) {
             $route = $this->prefix . $route;
         }
         if (!isset($this->routes[$method])) {
             $this->routes[$method] = [];
         }
         $ptr = &$this->routes[$method];
-        $prev = null;
-        $tok = explode('/', $route);
-        foreach ($tok as $t) {
-            if ($t === '') {
+        $tokens = explode('/', $route);
+        foreach ($tokens as $token) {
+            if ($token === '') {
                 continue;
             }
-            if (!isset($ptr[$t])) {
-                $ptr[$t] = [];
+            if (!isset($ptr[$token])) {
+                $ptr[$token] = [];
             }
-            if (strstr(key($ptr), '?}')) {
+            if (strstr(key($ptr), '?}') !== false) {
                 $ptr['.handler'] = $handler;
-                if ($this->before) {
+                if ($this->before !== null) {
                     $ptr['.before'] = $this->before;
                 }
-                if ($this->after) {
+                if ($this->after !== null) {
                     $ptr['.after'] = $this->after;
                 }
             }
-            $prev = &$ptr;
-            $ptr = &$ptr[$t];
+            $ptr = &$ptr[$token];
         }
         $ptr['.handler'] = $handler;
-        if ($this->before) {
+        if ($this->before !== null) {
             $ptr['.before'] = $this->before;
         }
-        if ($this->after) {
+        if ($this->after !== null) {
             $ptr['.after'] = $this->after;
         }
     }
 
-    public function route($method, $uri)
+    /**
+     * Preform routing
+     * @param  string $method
+     * @param  string $uri
+     * @return null|object
+     */
+    public function route(string $method, string $uri): ?object
     {
         $path = $uri;
         $query = null;
@@ -67,10 +102,10 @@ class Router
         $before = null;
         $after = null;
 
-        if (strstr($uri, '?')) {
-            $tok = explode('?', $uri);
-            $path = $tok[0];
-            $query = $tok[1];
+        if (strstr($uri, '?') !== false) {
+            $tokens = explode('?', $uri);
+            $path = $tokens[0];
+            $query = $tokens[1];
         }
 
         if (!isset($this->routes[$method])) {
@@ -78,9 +113,9 @@ class Router
         }
 
         $ptr = $this->routes[$method];
-        $tok = explode('/', $path);
+        $tokens = explode('/', $path);
 
-        foreach ($tok as $i => $dir) {
+        foreach ($tokens as $dir) {
             if ($dir === '') {
                 continue;
             }
@@ -91,17 +126,19 @@ class Router
                 break;
             } else {
                 $match = 0;
-                foreach ($ptr as $j => $p) {
-                    if ($j[0] === '.') {
+                $keys = array_keys($ptr);
+                foreach ($keys as $key) {
+                    $key = strval($key);
+                    if ($key[0] === '.') {
                         continue;
                     }
-                    if ($j[0] === '{') {
-                        $ptr = $ptr[$j];
-                        $params[substr($j, 1, -1)] = $dir;
+                    if ($key[0] === '{') {
+                        $ptr = $ptr[$key];
+                        $params[substr($key, 1, -1)] = $dir;
                         $match++;
                     }
                 }
-                if (!$match) {
+                if ($match === 0) {
                     return null;
                 }
             }
@@ -120,4 +157,12 @@ class Router
         return null;
     }
 
+    /**
+     * Return routes
+     * @return array|null
+     */
+    public function getRoutes()
+    {
+        return $this->routes;
+    }
 }

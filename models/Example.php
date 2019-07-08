@@ -5,9 +5,9 @@
  * Paris documentation is found at https://paris.readthedocs.io/
  */
 
-namespace Model;
+namespace Models;
 
 class Example extends \Model
 {
-
+    public static $_table = 'example';
 }

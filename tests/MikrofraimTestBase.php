@@ -3,26 +3,33 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
-class MikfrofraimTestBase extends TestCase
+class MikrofraimTestBase extends TestCase
 {
     /**
      *
-     * @var \Mikrofraim\Router
+     * @var \Mikrofraim\Router\Router
      */
-    protected $router;
+    protected static $router;
 
-    public function setUp()
+    /**
+     * @var \Mikrofraim\Application\Application
+     */
+    protected static $app;
+
+    public static function setUpBeforeClass()
     {
-        require_once('bootstrap/bootstrap.php');
-        $this->router = Route::getInstance();
+        if (!isset(self::$app)) {
+            self::$app = require_once('bootstrap/bootstrap.php');
+            self::$router = self::$app->getComponent('router');
+        }
     }
 
     protected function checkIfRouterResponseIsValid($routerResponse): void
     {
-        $this->assertInstanceOf(\Mikrofraim\RouterResponse::class, $routerResponse);
-        $this->assertTrue($this->isCallableOrValidCallableString($routerResponse->call), '$routerResponse->call not valid');
-        $this->assertTrue($this->isCallableOrNull($routerResponse->before), '$routerResponse before filter is not a callable or null');
-        $this->assertTrue($this->isCallableOrNull($routerResponse->after), '$routerResponse after filter is not a callable or null');
+        $this->assertInstanceOf(\Mikrofraim\Router\RouterResponse::class, $routerResponse);
+        $this->assertTrue($this->isCallableOrValidCallableString($routerResponse->getCall()), '$routerResponse->getCall() not valid');
+        $this->assertTrue($this->isCallableOrNull($routerResponse->getBefore()), '$routerResponse before filter is not a callable or null');
+        $this->assertTrue($this->isCallableOrNull($routerResponse->getAfter()), '$routerResponse after filter is not a callable or null');
     }
 
     protected function isCallableOrNull($c)
@@ -36,7 +43,7 @@ class MikfrofraimTestBase extends TestCase
             return true;
         }
 
-        if (strstr($call, '@') && count(explode('@', $call)) == 2) {
+        if (strstr($call, '@') && count(explode('@', $call)) === 2) {
             return true;
         }
 
@@ -45,7 +52,7 @@ class MikfrofraimTestBase extends TestCase
 
     protected function getRouterResponse(string $method, string $uri)
     {
-        return $this->router->route($method, $uri);
+        return self::$router->route($method, $uri);
     }
 
     /**
@@ -58,22 +65,18 @@ class MikfrofraimTestBase extends TestCase
     protected function getCallableFromRouterResponse($routerResponse)
     {
         /* determine handler function */
-        if (is_string($routerResponse->call)) {
-            if (strstr($routerResponse->call, '@')) {
-                $call = explode('@', $routerResponse->call);
-                $callClass = $call[0];
+        if (is_string($routerResponse->getCall())) {
+            if (strstr($routerResponse->getCall(), '@')) {
+                $call = explode('@', $routerResponse->getCall());
+                $callClass = 'Controllers\\' . $call[0];
                 $callFunc = $call[1];
-
-//                if (!method_exists($callClass, $callFunc)) {
-//                    throw new Exception('Method does not exist: ' . $routerResponse->call);
-//                }
-
-                return [$callClass, $callFunc];
+                $controller = new $callClass(self::$app);
+                return [$controller, $callFunc];
             } else {
-                return $routerResponse->call;
+                return $routerResponse->getCall();
             }
         } else {
-            return $routerResponse->call;
+            return $routerResponse->getCall();
         }
     }
 
@@ -86,10 +89,10 @@ class MikfrofraimTestBase extends TestCase
      */
     protected function callRouteWithoutFilters(string $method, string $uri)
     {
-        $routerReponse = $this->getRouterResponse($method, $uri);
+        $routerResponse = $this->getRouterResponse($method, $uri);
         $callable = $this->getCallableFromRouterResponse(
                         $this->getRouterResponse($method, $uri));
-        return call_user_func_array($callable, $routerReponse->params);
+        return call_user_func_array($callable, $routerResponse->getParams());
     }
 }
 

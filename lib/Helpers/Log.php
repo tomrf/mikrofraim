@@ -1,53 +1,76 @@
 <?php
 
-namespace Mikrofraim;
+namespace Mikrofraim\Helpers;
 
 class Log
 {
-    private static $logger = null;
+    /**
+     * Monolog Logger object
+     * @var mixed
+     */
+    private $logger = null;
 
-    public static function init()
+    public function __construct(string $filename, string $format)
     {
-        $formatter = new \Monolog\Formatter\LineFormatter("%datetime% > %level_name% > %message%\n");
-        $stream = new \Monolog\Handler\StreamHandler('../' . getenv('LOG_FILENAME'), \Monolog\Logger::DEBUG);
+        $formatter = new \Monolog\Formatter\LineFormatter($format);
+        $stream = new \Monolog\Handler\StreamHandler($filename, \Monolog\Logger::DEBUG);
         $stream->setFormatter($formatter);
-        self::$logger = new \Monolog\Logger('_');
-        self::$logger->pushHandler($stream);
+        $this->logger = new \Monolog\Logger('_');
+        $this->logger->pushHandler($stream);
     }
 
-    public static function debug($message)
+    /**
+     * log shortcut for debug()
+     * @param  string $message
+     */
+    public function debug(string $message): void
     {
-        if (self::$logger) {
-            self::$logger->debug($message);
+        if ($this->logger !== null) {
+            $this->logger->debug($message);
         }
     }
 
-    public static function info($message)
+    /**
+     * log shortcut for info()
+     * @param  string $message
+     */
+    public function info(string $message): void
     {
-        if (self::$logger) {
-            self::$logger->info($message);
+        if ($this->logger !== null) {
+            $this->logger->info($message);
         }
     }
 
-    public static function notice($message)
+    /**
+     * log shortcut for notice()
+     * @param  string $message
+     */
+    public function notice(string $message): void
     {
-        if (self::$logger) {
-            self::$logger->notice($message);
+        if ($this->logger !== null) {
+            $this->logger->notice($message);
         }
     }
 
-    public static function warning($message)
+    /**
+     * log shortcut for warning()
+     * @param  string $message
+     */
+    public function warning(string $message): void
     {
-        if (self::$logger) {
-            self::$logger->warning($message);
+        if ($this->logger !== null) {
+            $this->logger->warning($message);
         }
     }
 
-    public static function error($message)
+    /**
+     * log shortcut for error()
+     * @param  string $message
+     */
+    public function error(string $message): void
     {
-        if (self::$logger) {
-            self::$logger->error($message);
+        if ($this->logger !== null) {
+            $this->logger->error($message);
         }
     }
-
 }

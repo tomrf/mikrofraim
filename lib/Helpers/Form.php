@@ -1,20 +1,20 @@
 <?php
 
-namespace Mikrofraim;
+namespace Mikrofraim\Helpers;
 
 class Form
 {
-    public static function csrfValidate($token)
+    /**
+     * Validate CSRF token
+     * @param  string $token
+     * @return boolean
+     */
+    public function csrfValidate(string $token): bool
     {
-        if (!is_string($token) || !is_string(Session::get('csrfTokenPrevious'))) {
-            return false;
-        }
-
-        if ($token !== Session::get('csrfTokenPrevious')) {
+        if ($token !== \Session::get('csrfTokenPrevious')) {
             return false;
         }
 
         return true;
     }
-
 }

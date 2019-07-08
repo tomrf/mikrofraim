@@ -13,11 +13,18 @@ abstract class Facade
 
     public static function getInstance()
     {
-        if (!isset(static::$instance[static::getFacadeName()])) {
+        $facadeName = static::getFacadeName();
+        if (!isset(static::$instance[$facadeName])) {
             throw new \RuntimeException('Instance does not exist');
         }
 
-        return static::$instance[static::getFacadeName()];
+        $instance = static::$instance[$facadeName];
+
+        if (is_callable($instance)) {
+            static::$instance[$facadeName] = call_user_func($instance);
+        }
+
+        return static::$instance[$facadeName];
     }
 
     public static function __callStatic($name, $arguments)
@@ -25,7 +32,7 @@ abstract class Facade
         $instance = static::getInstance();
 
         if ($instance === null) {
-            throw new \RuntimeException('No instance set');
+            throw new \RuntimeException('No instance set for this facade');
         }
 
         if (!method_exists($instance, $name)) {
@@ -34,5 +41,4 @@ abstract class Facade
 
         return call_user_func_array([$instance, $name], $arguments);
     }
-
 }

@@ -1,43 +1,51 @@
 <?php
 
-namespace Mikrofraim;
+namespace Mikrofraim\Helpers;
 
 class Session
 {
-    private static $started = false;
-
-    private static function start()
+    public function __construct(?string $name = null)
     {
-        if (self::sessionDisabled()) {
+        if ($this->sessionDisabled()) {
             return;
         }
-        if (!self::$started) {
-            if (getenv('SESSION_NAME')) {
-                session_name(getenv('SESSION_NAME'));
-            }
-            session_start();
-            self::$started = true;
+        if ($name !== null) {
+            session_name($name);
         }
+        session_start();
     }
 
-    public static function set($key, $value)
+    /**
+     * Set a session key
+     * @param  string $key
+     * @param  mixed $value
+     * @return mixed return set value
+     */
+    public function set(string $key, $value)
     {
-        self::start();
         return $_SESSION[$key] = $value;
     }
 
-    public static function get($key)
+    /**
+     * Get a session key value
+     * @param  string $key
+     * @return null|mixed
+     */
+    public function get(string $key)
     {
-        self::start();
         if (isset($_SESSION[$key])) {
             return $_SESSION[$key];
         }
         return null;
     }
 
-    public static function delete($key)
+    /**
+     * Delete a session key
+     * @param  string $key
+     * @return boolean
+     */
+    public function delete(string $key): bool
     {
-        self::start();
         if (isset($_SESSION[$key])) {
             unset($_SESSION[$key]);
             return true;
@@ -45,19 +53,25 @@ class Session
         return false;
     }
 
-    protected static function sessionDisabled() : bool
+    /**
+     * Return value of MIKROFRAIM_TESTSUITE
+     * @return boolean
+     */
+    protected function sessionDisabled(): bool
     {
         return defined('MIKROFRAIM_TESTSUITE');
     }
 
-    public static function clear()
+    /**
+     * Clear the session
+     * @return boolean
+     */
+    public function clear(): bool
     {
-        if (self::sessionDisabled()) {
-            return;
+        if ($this->sessionDisabled()) {
+            return true;
         }
-        self::start();
         session_destroy();
         return true;
     }
-
 }

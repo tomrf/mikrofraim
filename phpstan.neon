@@ -1,0 +1,12 @@
+parameters:
+    bootstrap: bootstrap/bootstrap.php
+    excludes_analyse:
+        - lib/Facades
+    ignoreErrors:
+        - '#.*Redis not found.*#'
+        - '#.*unknown class Redis.*#'
+        - '#.*undefined static method Mikrofraim\\Facades.*#'
+        - '#.*_SESSION in isset\(\) always exists.*#'
+    reportUnmatchedIgnoredErrors: false
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon

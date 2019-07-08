@@ -7,8 +7,9 @@
  *
  * @author Fredrik
  */
-class MikrofraimFrameworkTest extends MikfrofraimTestBase
+class MikrofraimFrameworkTest extends MikrofraimTestBase
 {
+
     public function setUp()
     {
         parent::setUp();
@@ -17,9 +18,16 @@ class MikrofraimFrameworkTest extends MikfrofraimTestBase
     public function tearDown()
     {
         parent::tearDown();
-        if (file_exists(getenv('DATABASE_FILENAME'))) {
-            @unlink(getenv('DATABASE_FILENAME'));
-        }
+    }
+
+    public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        parent::tearDownAfterClass();
     }
 
     /**
@@ -45,7 +53,7 @@ class MikrofraimFrameworkTest extends MikfrofraimTestBase
 
     public function testSetup()
     {
-        $this->assertInstanceOf(\Mikrofraim\Router::class, $this->router);
+        $this->assertInstanceOf(\Mikrofraim\Router\Router::class, self::$router);
     }
 
     protected function createTables()
